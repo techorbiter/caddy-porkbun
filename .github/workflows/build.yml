@@ -26,6 +26,5 @@ jobs:
 
       - name: Build and push
         run: |
-          docker build -t ghcr.io/{{ github.repository }} -t ghcr.io/{{ github.repository }}:{{ github.sha }} .
-          docker push ghcr.io/{{ github.repository }}
-          docker push ghcr.io/{{ github.repository }}:{{ github.sha }}
+          docker build -t ghcr.io/techorbiter/caddy-porkbun:latest .
+          docker push ghcr.io/techorbiter/caddy-porkbun:latest
