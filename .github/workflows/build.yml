@@ -28,8 +28,7 @@ jobs:
       - name: Get upstream version
         id: version
         run: |
-          version=$(docker buildx imagetools inspect docker.io/caddy:2 \
-            --format '{{index .Image.Config.Labels "org.opencontainers.image.version"}}' | sed 's/^v//')
+          version=$(docker inspect docker.io/caddy:2   --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' | sed 's/^v//')
           echo "full=$version" >> $GITHUB_OUTPUT
           echo "minor=$(echo $version | cut -d. -f1-2)" >> $GITHUB_OUTPUT
           echo "major=$(echo $version | cut -d. -f1)" >> $GITHUB_OUTPUT
