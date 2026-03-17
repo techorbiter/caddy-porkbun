@@ -26,5 +26,14 @@ jobs:
 
       - name: Build and push
         run: |
-          docker build -t ghcr.io/techorbiter/caddy-porkbun:latest .
-          docker push ghcr.io/techorbiter/caddy-porkbun:latest
+          docker build -t ghcr.io/${{ github.repository }} -t ghcr.io/${{ github.repository }}:${{ github.sha }} .
+          docker push ghcr.io/${{ github.repository }}
+          docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+      - name: Delete old packages
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'caddy-porkbun'
+          package-type: 'container'
+          min-versions-to-keep: 5
+          num-old-versions-to-delete: 2
