@@ -17,31 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get upstream digest
-        id: upstream
-        run: |
-          digest=$(docker buildx imagetools inspect docker.io/caddy:2 \
-            --format '{{.Manifest.Digest}}')
-          echo "digest=$digest" >> $GITHUB_OUTPUT
-
-      - name: Get last built digest
-        id: last
-        run: |
-          digest=$(docker buildx imagetools inspect ghcr.io/${{ github.repository }}:latest \
-            --format '{{index .Image.Config.Labels "base-digest"}}' 2>/dev/null || echo "none")
-          echo "digest=$digest" >> $GITHUB_OUTPUT
-
-      - name: Skip if unchanged
-        id: check
-        run: |
-          if [ "${{ steps.upstream.outputs.digest }}" = "${{ steps.last.outputs.digest }}" ]; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-          else
-            echo "skip=false" >> $GITHUB_OUTPUT
-          fi
-
+      
       - name: Log in to GHCR
-        if: steps.check.outputs.skip == 'false'
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
@@ -49,18 +26,15 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Get upstream version
-        if: steps.check.outputs.skip == 'false'
         id: version
         run: |
           version=$(docker buildx imagetools inspect docker.io/caddy:2 \
-            --format '{{index .Image.Config.Labels "org.opencontainers.image.version"}}' \
-            | sed 's/^v//')
+            --format '{{index .Image.Config.Labels "org.opencontainers.image.version"}}' | sed 's/^v//')
           echo "full=$version" >> $GITHUB_OUTPUT
           echo "minor=$(echo $version | cut -d. -f1-2)" >> $GITHUB_OUTPUT
           echo "major=$(echo $version | cut -d. -f1)" >> $GITHUB_OUTPUT
 
       - name: Build and push
-        if: steps.check.outputs.skip == 'false'
         uses: docker/build-push-action@v6
         with:
           context: .
