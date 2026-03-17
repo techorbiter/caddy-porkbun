@@ -25,10 +25,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
+        run: |
+          docker build -t ghcr.io/{{ github.repository }} -t ghcr.io/{{ github.repository }}:{{ github.sha }} .
+          docker push ghcr.io/{{ github.repository }}
+          docker push ghcr.io/{{ github.repository }}:{{ github.sha }}
