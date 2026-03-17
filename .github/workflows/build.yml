@@ -25,7 +25,7 @@ jobs:
             | sed 's/^v//')
           minor_version=$(echo $full_version | cut -d. -f1-2)
           major_version=$(echo $full_version | cut -d. -f1)
-          docker login --usermame ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
+          docker login --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
           docker build \
             -t ghcr.io/${{ github.repository }} \
             -t ghcr.io/${{ github.repository }}:${{ github.sha }} \
