@@ -2,7 +2,8 @@ name: Build and Push
 
 on:
   push:
-    branches: [main]
+    paths:
+    - Dockerfile
   schedule:
     - cron: '0 4 * * 1'    # check every Monday
   workflow_dispatch:
