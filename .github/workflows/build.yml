@@ -5,7 +5,7 @@ on:
     paths:
     - Dockerfile
   schedule:
-    - cron: '0 4 * * 1'    # check every Monday
+    - cron: '0 4 * * 1'    # run every Monday
   workflow_dispatch:
 
 jobs:
