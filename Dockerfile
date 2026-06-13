@@ -4,7 +4,7 @@ FROM docker.io/caddy:${VERSION}-builder AS builder
 
 RUN xcaddy build \
     --with github.com/caddy-dns/porkbun \
-    --with github.com/darkweak/souin
+    --with github.com/caddyserver/cache-handler
 
 FROM docker.io/caddy:${VERSION}
 
