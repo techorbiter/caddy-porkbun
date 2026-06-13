@@ -3,7 +3,8 @@ ARG VERSION=2
 FROM docker.io/caddy:${VERSION}-builder AS builder
 
 RUN xcaddy build \
-    --with github.com/caddy-dns/porkbun
+    --with github.com/caddy-dns/porkbun \
+    --with github.com/darkweak/souin
 
 FROM docker.io/caddy:${VERSION}
 
